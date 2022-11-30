@@ -46,7 +46,7 @@ def update(strip, table_values):
     hour_color = table_values["primary_color"]
     minute_color = table_values["secondary_color"]
 
-    # color of background
+    # color of background, set to the opposite of hour_color, so that it contrasts
     w1 = (hour_color >> 24) & 0xFF;
     r1 = (hour_color >> 16) & 0xFF;
     g1 = (hour_color >> 8) & 0xFF;
