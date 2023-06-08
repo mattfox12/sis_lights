@@ -5,7 +5,11 @@
 # Description: Show hours, minutes, seconds via lights
 # Uses: Primary, Secondary
 
-from neopixel import *
+# library changed names since our initial release, this imports the available one
+try:
+    from neopixel import *
+except ImportError:
+    from rpi_ws281x import *
 import datetime
 from timeit import default_timer as timer
 import sys
@@ -107,8 +111,8 @@ def update(strip, table_values):
         pos = x % led_count
         strip.setPixelColor(pos, second_color)
 
-    # draw
-    strip.show()
+    # always update
+	table_values["do_update"] = True
 
     # increment time
     if transition < 1.0:

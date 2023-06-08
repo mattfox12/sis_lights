@@ -1,6 +1,6 @@
 # Sisyphus Lights Primer
 
-Making light patterns for your RGBW Sisyphus can be done by writing a Python script. Uploading is allowed starting with Sisbot version 1.10.88.
+Making light patterns for your RGBW Sisyphus can be done by writing a Python script. Uploading is allowed starting with Sisbot version 1.10.88. Starting with Sisbot 1.12.17, an additional table_state "do_update" value was added. This value needs to be set to True in order for the lights to update their color values. Ideally, you optimize your pattern to not send data if no light colors have changed.
 
 ## Expected Functions
 
@@ -18,6 +18,7 @@ Table_state dictionary contains all exposed values of the current state of the S
 * secondary_color
 * percent (amount of current track completed: 0-1.0)
 * led_offset (offset for zero point, in radians)
+* do_update (True|False)
 
 Theta automatically accounts for led_offset, but if your pattern depends on knowing where the zero point is, led_offset is there to calculate it. Currently, only Sisyphus Mini (LE/EX/ES) have an led_offset that is not zero. The value of led_offset can be changed by the user in Settings->Advanced Settings->Advanced Lights via the slider.
 
@@ -41,6 +42,7 @@ This file contains an Enumerator class for knowing the current Sisyphus state. P
 * wheel(pos): Returns rainbow color within 0-255 pos(itions).
 * isSame(color1,color2): Compare if two colors are identical
 * isDiff(color1,color2): Compare if two colors are different
+* similarity(color1,color2): Gives a float value of how similar the two colors are to each other. 0.0 == completely different, 1.0 == identical
 
 ## Simple example
 

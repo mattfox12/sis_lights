@@ -5,7 +5,11 @@
 # Description: Move away randomly from Primary Color
 # Uses: Primary
 
-from neopixel import *
+# library changed names since our initial release, this imports the available one
+try:
+    from neopixel import *
+except ImportError:
+    from rpi_ws281x import *
 from timeit import default_timer as timer
 import sys
 from random import random
@@ -110,6 +114,9 @@ def update(strip, table_values):
             new_color = Color(int(vel_list[index+1]), int(vel_list[index+3]), int(vel_list[index+5]), int(vel_list[index+7]))
 
             strip.setPixelColor(i, colorBlend(strip.getPixelColor(i),new_color,0.5))
+
+	# always update
+    table_values["do_update"] = True
 
     # increment time
     if transition < 1.5:

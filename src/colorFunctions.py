@@ -5,7 +5,11 @@
 # Commonly used color functions for RGBW lights
 
 import time
-from neopixel import Color
+# library changed names since our initial release, this imports the available one
+try:
+    from neopixel import Color
+except ImportError:
+    from rpi_ws281x import Color
 
 def colorBlend(color1,color2,blend=0):
     """Returns a color at (blend) percent between color1 and color2."""
@@ -240,3 +244,24 @@ def isSame(color1,color2):
 def isDiff(color1,color2):
     """Compares if two colors are the same."""
     return not isSame(color1,color2)
+
+# return value from 0-1.0 (1.0 == identical)
+def similarity(color1,color2):
+    """Compares if two colors are the same."""
+    w1 = (color1 >> 24) & 0xFF;
+    w2 = (color2 >> 24) & 0xFF;
+    wS = 1.0 - (abs(w2-w1)/255.0)
+
+    r1 = (color1 >> 16) & 0xFF;
+    r2 = (color2 >> 16) & 0xFF;
+    rS = 1.0 - (abs(r2-r1)/255.0)
+
+    g1 = (color1 >> 8) & 0xFF;
+    g2 = (color2 >> 8) & 0xFF;
+    gS = 1.0 - (abs(g2-g1)/255.0)
+
+    b1 = color1 & 0xFF;
+    b2 = color2 & 0xFF;
+    bS = 1.0 - (abs(b2-b1)/255.0)
+
+    return (wS + rS + gS + bS)/4.0

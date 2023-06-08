@@ -5,13 +5,18 @@
 # Description: Alternating color bands, move at faster than theta speed
 # Uses: Primary, Secondary
 
-from neopixel import *
+# library changed names since our initial release, this imports the available one
+try:
+    from neopixel import *
+except ImportError:
+    from rpi_ws281x import *
 from timeit import default_timer as timer
 import sys
 
-from colorFunctions import fill
+# from colorFunctions import fill
 from colorFunctions import colorBlend
 from colorFunctions import isDiff
+from colorFunctions import similarity
 from easing import easeOut
 
 from sisyphusState import SisyphusState
@@ -25,7 +30,7 @@ current_secondary = Color(0,0,0,0)
 fullcount = 0
 secondcount = 0
 
-speed = 3.0     # theta multiplied
+speed = 1.1     # theta multiplied
 divisions = 3   # number of each color
 
 def init(strip, table_values):
@@ -69,15 +74,29 @@ def update(strip, table_values):
                 strip.setPixelColor(i, colorBlend(strip.getPixelColor(i), current_primary, easeOut(transition)))
             else:
                 strip.setPixelColor(i, colorBlend(strip.getPixelColor(i), current_secondary, easeOut(transition)))
+        table_values["do_update"] = True
     else:
-        for i in range(strip.numPixels()+1):
+        is_change = False
+        for i in range(strip.numPixels()):
             index = ((i-1+offset) % strip.numPixels()) % fullcount
             if index < secondcount:
                 if isDiff(current_primary, strip.getPixelColor(i)):
-                    strip.setPixelColor(i, colorBlend(current_primary, strip.getPixelColor(i), 0.5))
+                    # print("Primary", i, similarity(current_secondary, strip.getPixelColor(i)))
+                    if similarity(current_primary, strip.getPixelColor(i)) < 0.98:
+                        strip.setPixelColor(i, colorBlend(current_primary, strip.getPixelColor(i), 0.85))
+                    else:
+                        strip.setPixelColor(i, current_primary)
+                    is_change = True
             else:
                 if isDiff(current_secondary, strip.getPixelColor(i)):
-                    strip.setPixelColor(i, colorBlend(current_secondary, strip.getPixelColor(i), 0.5))
+                    # print("Secondary", i, similarity(current_secondary, strip.getPixelColor(i)))
+                    if similarity(current_secondary, strip.getPixelColor(i)) < 0.98:
+                        strip.setPixelColor(i, colorBlend(current_secondary, strip.getPixelColor(i), 0.85))
+                    else:
+                        strip.setPixelColor(i, current_secondary)
+                    is_change = True
+        if is_change:
+            table_values["do_update"] = True
 
     # increment time
     if transition < 1.0:

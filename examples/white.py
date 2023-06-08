@@ -4,37 +4,59 @@
 #
 # White with a color temperature
 
-from neopixel import *
+try:
+    from neopixel import *
+except ImportError:
+    from rpi_ws281x import *
+
 from timeit import default_timer as timer
 import sys
 
 from colorFunctions import fill
 from colorFunctions import colorBlend
+from colorFunctions import isDiff
 from easing import easeOut
 
 time_start = 0 # for elapsed time
 transition = 0 # 0-1.0, fade between states
 
+did_show = False
+target_color = Color(0,0,0,0)
+
 def init(strip, table_values):
-    global transition, time_start
+    global transition, time_start, did_show
     transition = 0
     time_start = 0
+
+    did_show = False
+
     # print "Init white pattern {0} {1}\n".format(time_start, transition),
-    # sys.stdout.flush()
+    sys.stdout.flush()
 
 def update(strip, table_values):
-    global transition, time_start
+    global transition, time_start, did_show, target_color
+
     if time_start == 0:
         time_start = timer()
         transition = 0
         # print "Start white timer {0}\n".format(time_start),
-        # sys.stdout.flush()
+        sys.stdout.flush()
+
+    # reset target_color, transition if we are given a new primary_color
+    if isDiff(table_values["primary_color"], target_color):
+        target_color = table_values["primary_color"]
+        transition = 0
+        time_start = timer() # reset
+        did_show = False
 
     if transition < 1.0:
         for i in range(strip.numPixels()+1):
-            strip.setPixelColor(i, colorBlend(strip.getPixelColor(i),table_values["primary_color"],easeOut(transition)))
-    else:
-        fill(strip, table_values["primary_color"]) # fill with white
+            strip.setPixelColor(i, colorBlend(strip.getPixelColor(i),target_color,easeOut(transition)))
+        table_values["do_update"] = True
+    elif did_show == False:
+        fill(strip, target_color) # fill with white
+        did_show = True
+        table_values["do_update"] = True
 
     # increment time
     if transition < 1.0:
