@@ -12,11 +12,11 @@ except ImportError:
     from rpi_ws281x import Color
 
 def colorBlend(color1,color2,blend=0):
-    """Returns a color at (blend) percent between color1 and color2."""
-    if (blend > 1):
-        blend = 1
-    if (blend < 0):
-        blend = 0
+    """Returns a color at (blend) percent between color1 (0) and color2 (1.0)"""
+    if blend >= 1:
+        return color2
+    if blend <= 0:
+        return color1
     w1 = (color1 >> 24) & 0xFF;
     r1 = (color1 >> 16) & 0xFF;
     g1 = (color1 >> 8) & 0xFF;
@@ -33,9 +33,9 @@ def colorBlend(color1,color2,blend=0):
 
 def hsbBlend(color1,color2,blend=0):
     """Returns a color at (blend) percent between color1 and color2 using Hue/Saturation/Black changes."""
-    if (blend >= 1):
+    if blend >= 1:
         return color2
-    if (blend <= 0):
+    if blend <= 0:
         return color1
     w1 = (color1 >> 24) & 0xFF;
     r1 = (color1 >> 16) & 0xFF;

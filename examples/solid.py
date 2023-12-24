@@ -3,7 +3,7 @@
 # Author: Matthew Klundt (matt@sisyphus-industries.com)
 #
 # Description: All lights primary color
-# Uses: Primary
+# Uses: Primary #0000ff00
 
 try:
     from neopixel import *

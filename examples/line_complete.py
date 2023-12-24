@@ -3,7 +3,7 @@
 # Author: Matthew Klundt (matt@sisyphus-industries.com)
 #
 # Description: Wipe from Primary (start) to Secondary (end) color, based on percent of track played
-# Uses: Primary, Secondary
+# Uses: Primary #0000ff00, Secondary #ff330000
 
 # library changed names since our initial release, this imports the available one
 try:

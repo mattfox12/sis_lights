@@ -3,7 +3,7 @@
 # Author: Matthew Klundt (matt@sisyphus-industries.com)
 #
 # Description: Fades between Primary (start) - Secondary (end), based on percent of track played
-# Uses: Primary, Secondary
+# Uses: Primary #ff330000, Secondary #0000ff00
 
 # library changed names since our initial release, this imports the available one
 try:

@@ -2,7 +2,8 @@
 # White
 # Author: Matthew Klundt (matt@sisyphus-industries.com)
 #
-# White with a color temperature
+# Description: White with a color temperature
+# Uses: White
 
 try:
     from neopixel import *

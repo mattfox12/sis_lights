@@ -3,7 +3,7 @@
 # Author: Matthew Klundt (matt@sisyphus-industries.com)
 #
 # Description: Alternating color bands, move at faster than theta speed
-# Uses: Primary, Secondary
+# Uses: Primary #ff000000, Secondary #000000ff
 
 # library changed names since our initial release, this imports the available one
 try:

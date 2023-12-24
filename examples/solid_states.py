@@ -3,7 +3,7 @@
 # Author: Matthew Klundt (matt@sisyphus-industries.com)
 #
 # Description: All lights primary color, change based on table state
-# Uses: Primary
+# Uses: Primary #9933ff00
 
 # library changed names since our initial release, this imports the available one
 try:

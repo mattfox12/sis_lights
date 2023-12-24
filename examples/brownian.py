@@ -3,7 +3,7 @@
 # Author: Matthew Klundt (matt@sisyphus-industries.com)
 #
 # Description: Move away randomly from Primary Color
-# Uses: Primary
+# Uses: Primary #ff000000
 
 # library changed names since our initial release, this imports the available one
 try:
